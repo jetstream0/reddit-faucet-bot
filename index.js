@@ -10,9 +10,10 @@ const questions = require('./questions.js');
 
 //const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-//constants. If these are changed, text for successful claim will need to be changed also.
-const BRICK_CLAIM_INT = 30 * 24 * 60 * 60 * 1000;
-const ARB_CLAIM_INT = 7 * 24 * 60 * 60 * 1000;
+const BRICK_CLAIM_INT = questions.config.brick_claim_int || 30 * 24 * 60 * 60 * 1000;
+const BRICK_TIME_TEXT = questions.config.brick_time_text || "a month";
+const ARB_CLAIM_INT = questions.config.arb_claim_int || 7 * 24 * 60 * 60 * 1000;
+const ARB_TIME_TEXT = questions.config.arb_time_text || "a week";
 
 //respond within 2 hours
 const RESPOND_WITHIN = 2 * 60 * 60 * 1000;
@@ -150,7 +151,7 @@ comments.on("item", async (item) => {
         return;
       }
       await db.add_claim(author, "arb");
-      item.reply(`## Success!\nYou have been [sent](https://nova-explorer.arbitrum.io/tx/${tx}) ${questions.config.arb_amount} Arb ETH. You can claim again in a week.`);
+      item.reply(`## Success!\nYou have been [sent](https://nova-explorer.arbitrum.io/tx/${tx}) ${questions.config.arb_amount} Arb ETH. You can claim again in ${ARB_TIME_TEXT}.`);
       return;
     } else if (request.type === "brick") {
       let tx = await faucet.send_bricks(address, questions.config.bricks_amount);
@@ -159,7 +160,7 @@ comments.on("item", async (item) => {
         return;
       }
       await db.add_claim(author, "brick");
-      item.reply(`## Success!\nYou have been [sent](https://nova-explorer.arbitrum.io/tx/${tx}) ${questions.config.bricks_amount} Brick (s). You can claim again in a month.`);
+      item.reply(`## Success!\nYou have been [sent](https://nova-explorer.arbitrum.io/tx/${tx}) ${questions.config.bricks_amount} Brick (s). You can claim again in ${BRICK_TIME_TEXT}.`);
       return;
     }
     return;
