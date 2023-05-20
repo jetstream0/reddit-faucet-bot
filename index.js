@@ -29,7 +29,7 @@ const BOT = new snoowrap({
 });
 
 const comments = new snoostorm.CommentStream(BOT, {
-  subreddit: "testingtestingabc",
+  subreddit: "BRICKMOON",
   limit: 8,
   pollTime: 15000,
 });
